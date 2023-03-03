@@ -12,12 +12,11 @@ struct WorkedUpApp: App {
     @State var currentNumber: String = "1"
     
     init() {
-//        let urlString = "file:///Users/stormychel/Library/Application\\ Support/Upwork/Upwork/Logs/upwork..20230303.log"
-
-        let urlString = "/Users/stormychel/Library/Application Support/Upwork/Upwork/Logs"
-        
         let fm = FileManager.default
-        let path = urlString
+        let userName = NSUserName()
+        let path = "/Users/\(userName)/Library/Application Support/Upwork/Upwork/Logs"
+        
+        print("path: \(path)")
 
         do {
             let items = try fm.contentsOfDirectory(atPath: path)
@@ -26,21 +25,10 @@ struct WorkedUpApp: App {
                 print("Found \(item)")
             }
         } catch {
-            
             print("failed to read directory – bad permissions, perhaps?")
-            
         }
-        
-        
-        // just trying to get to the data we need first
-        
-//        if let filepath = Bundle.main.path(forResource: "example", ofType: "txt") {
-        
-        
-        print("urlString: \(urlString)")
-        print("test     : file:///Users/stormychel/Library/Containers/com.tiseyer.typegear-ai/Data/Documents/")
-        
-        if let url = URL(string: urlString) {
+
+        if let url = URL(string: path) {
             
             print("URL: \(url.absoluteString)")
             
