@@ -19,10 +19,14 @@ struct WorkedUpApp: App {
         print("path: \(path)")
 
         do {
-            let items = try fm.contentsOfDirectory(atPath: path)
+            let logs = try fm.contentsOfDirectory(atPath: path).filter({!$0.contains("cmon") && !$0.contains("dash")})
 
-            for item in items {
-                print("Found \(item)")
+            for log in logs {
+                print("Found \(log)")
+
+                let x = Int(log.filter("0123456789.".contains))
+                
+                print(x)
             }
         } catch {
             print("failed to read directory – bad permissions, perhaps?")
