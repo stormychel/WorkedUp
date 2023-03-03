@@ -31,7 +31,7 @@ struct WorkedUpApp: App {
                     
                     print("newestLogFileString: \(newestLogFileString)")
 
-                    // TODO: extract hours worked this week and do something with it
+                    // TODO: extract highest count of 'minutesWorkedThisWeek' and do something with it
                     
                 } catch {
                     print(error)
