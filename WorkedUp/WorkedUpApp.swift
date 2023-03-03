@@ -20,18 +20,21 @@ struct WorkedUpApp: App {
 
         do {
             let logs = try fm.contentsOfDirectory(atPath: path).filter({!$0.contains("cmon") && !$0.contains("dash")})
-
-            for log in logs {
-                print("Found \(log)")
-
-                let x = Int(log.filter("0123456789.".contains))
+            
+            if let newestLog = logs.sorted(by: {$0.filter("0123456789".contains) > $1.filter("0123456789".contains)}).first {
+                print("newestLog: \(newestLog)")
                 
-                print(x)
+                
             }
+            
         } catch {
             print("failed to read directory – bad permissions, perhaps?")
         }
 
+        
+        
+        // MARK: TEST
+        
         if let url = URL(string: path) {
             
             print("URL: \(url.absoluteString)")
