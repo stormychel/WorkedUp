@@ -19,40 +19,28 @@ struct WorkedUpApp: App {
         print("path: \(path)")
 
         do {
-            let logs = try fm.contentsOfDirectory(atPath: path).filter({!$0.contains("cmon") && !$0.contains("dash")})
+            let logFileNames = try fm.contentsOfDirectory(atPath: path).filter({!$0.contains("cmon") && !$0.contains("dash")})
             
-            if let newestLog = logs.sorted(by: {$0.filter("0123456789".contains) > $1.filter("0123456789".contains)}).first {
-                print("newestLog: \(newestLog)")
+            if let newestLogFileName = logFileNames.sorted(by: {$0.filter("0123456789".contains) > $1.filter("0123456789".contains)}).first {
+                let urlString = path + "/" + newestLogFileName
                 
-                
+                print("urlString: \(urlString)")
+                    
+                do {
+                    let newestLogFileString = try String(contentsOfFile: urlString)
+                    
+                    print("newestLogFileString: \(newestLogFileString)")
+
+                    // TODO: extract hours worked this week and do something with it
+                    
+                } catch {
+                    print(error)
+                }
             }
-            
         } catch {
-            print("failed to read directory – bad permissions, perhaps?")
+            print(error)
         }
 
-        
-        
-        // MARK: TEST
-        
-        if let url = URL(string: path) {
-            
-            print("URL: \(url.absoluteString)")
-            
-            do {
-                let contents = try String(contentsOfFile: url.absoluteString)
-                
-                print(contents)
-            } catch {
-                // contents could not be loaded
-                print("CATCH")
-            }
-        } else {
-            // example.txt not found!
-            print("ELSE")
-        }
-        
-        
     }
 
     var body: some Scene {
