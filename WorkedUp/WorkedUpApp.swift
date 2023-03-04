@@ -23,7 +23,6 @@ struct WorkedUpApp: App {
             Button("Quit") {
                 NSApplication.shared.terminate(self)
             }
-            
         }
     }
     
@@ -57,17 +56,11 @@ struct WorkedUpApp: App {
                 do {
                     let newestLogFileString = try String(contentsOfFile: urlString) // make string from file
                     
-                    // chop string into array of lines
-                    var lines: [String] = [] // contains file line by line
-                    for line in newestLogFileString.split(separator: "\n") {
-                        lines.append( String(line) )
-                    }
-                    
-
                     var contracts: [String : Int] = [ : ] // contains rollupId entries
                     var currenrRollupId: String = ""
                     
-                    for line in lines {
+                    // chop string into array of lines + get required data
+                    for line in newestLogFileString.split(separator: "\n") {
                         if line.contains("rollupId") {
                             currenrRollupId = line.filter("0123456789".contains)
                         } else if line.contains("minutesWorkedThisWeek") {
@@ -81,24 +74,18 @@ struct WorkedUpApp: App {
                                         contracts[currenrRollupId] = new
                                     }
                                 }
-                                
-                                currenrRollupId = ""
+                                currenrRollupId = "" // end of current, clear name
                             }
                         }
                     }
-                    
-                    print(contracts)
-                                                           
+                     
                     var total: Int = 0
                     
                     for (_, value) in contracts {
                         total += value
                     }
-                                        
-                    print("total : \(total)")
-                    
+                                                            
                     return total
-                    
                 } catch {
                     print(error)
                 }
@@ -108,6 +95,5 @@ struct WorkedUpApp: App {
         }
 
         return 0
-        
     }
 }
