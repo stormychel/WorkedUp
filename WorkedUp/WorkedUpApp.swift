@@ -9,9 +9,35 @@ import SwiftUI
 
 @main
 struct WorkedUpApp: App {
-    @State var totalTimeWorked: Int = 0
-    
+    @StateObject var appState = AppState.shared
+
     init() {
+        startTimer()
+    }
+
+    var body: some Scene {
+        MenuBarExtra( appState.label) {
+            Text("\(appState.label)")
+            
+            Button("Quit") {
+                NSApplication.shared.terminate(self)
+            }
+            
+        }
+    }
+    
+    fileprivate func startTimer() {
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            DispatchQueue.main.async {
+                
+                print("updating")
+                
+                AppState.shared.label = " \(getTotal()) "
+            }
+        }
+    }
+    
+    fileprivate func getTotal () -> Int {
         let fm = FileManager.default
         let userName = NSUserName()
         let path = "/Users/\(userName)/Library/Application Support/Upwork/Upwork/Logs"
@@ -60,22 +86,16 @@ struct WorkedUpApp: App {
                     }
                     
                     print(contracts)
-                                       
-                    totalTimeWorked = 0
-                    
-                    var test: Int = 0
+                                                           
+                    var total: Int = 0
                     
                     for (_, value) in contracts {
-                        totalTimeWorked += value
-                        
-                        test += value
+                        total += value
                     }
                                         
-                    print("test : \(test)")
-
-                    totalTimeWorked = test
+                    print("total : \(total)")
                     
-                    print("totalTimeWorked : \(totalTimeWorked)")
+                    return total
                     
                 } catch {
                     print(error)
@@ -85,15 +105,7 @@ struct WorkedUpApp: App {
             print(error)
         }
 
-    }
-
-    var body: some Scene {
-        MenuBarExtra( String(totalTimeWorked) ) {
-            
-            Button("Quit") {
-                NSApplication.shared.terminate(self)
-            }
-            
-        }
+        return 0
+        
     }
 }

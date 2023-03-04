@@ -11,6 +11,7 @@
 		EDC3E98329AFA63A0089BCEA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC3E98229AFA63A0089BCEA /* ContentView.swift */; };
 		EDC3E98529AFA63D0089BCEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDC3E98429AFA63D0089BCEA /* Assets.xcassets */; };
 		EDC3E98829AFA63D0089BCEA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDC3E98729AFA63D0089BCEA /* Preview Assets.xcassets */; };
+		EDCAABFA29B2CE770031E981 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCAABF929B2CE770031E981 /* AppState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		EDC3E98429AFA63D0089BCEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDC3E98729AFA63D0089BCEA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EDC3E98929AFA63D0089BCEA /* WorkedUp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WorkedUp.entitlements; sourceTree = "<group>"; };
+		EDCAABF929B2CE770031E981 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				EDC3E98029AFA63A0089BCEA /* WorkedUpApp.swift */,
+				EDCAABF929B2CE770031E981 /* AppState.swift */,
 				EDC3E98229AFA63A0089BCEA /* ContentView.swift */,
 				EDC3E98429AFA63D0089BCEA /* Assets.xcassets */,
 				EDC3E98929AFA63D0089BCEA /* WorkedUp.entitlements */,
@@ -139,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDCAABFA29B2CE770031E981 /* AppState.swift in Sources */,
 				EDC3E98329AFA63A0089BCEA /* ContentView.swift in Sources */,
 				EDC3E98129AFA63A0089BCEA /* WorkedUpApp.swift in Sources */,
 			);
