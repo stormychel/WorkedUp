@@ -12,12 +12,13 @@ struct WorkedUpApp: App {
     @StateObject var appState = AppState.shared
 
     init() {
+        updateLabel()
         startTimer()
     }
 
     var body: some Scene {
         MenuBarExtra( appState.label) {
-            Text("\(appState.label)")
+            Text("Total time on Upwork this week: \(appState.label)")
             
             Button("Quit") {
                 NSApplication.shared.terminate(self)
@@ -27,13 +28,16 @@ struct WorkedUpApp: App {
     }
     
     fileprivate func startTimer() {
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-            DispatchQueue.main.async {
-                
-                print("updating")
-                
-                AppState.shared.label = " \(getTotal()) "
-            }
+        Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { timer in
+            updateLabel()
+        }
+    }
+    
+    fileprivate func updateLabel() {
+        DispatchQueue.main.async {
+            let hhmm = minutesToHoursAndMinutes( getTotal() )
+            
+            AppState.shared.label = "\(hhmm.hours):\(hhmm.leftMinutes)"
         }
     }
     
@@ -59,10 +63,8 @@ struct WorkedUpApp: App {
                         lines.append( String(line) )
                     }
                     
-                    // TODO: scan for entry line containing LOAD_WORKED_TIME, this is the start of the JSON
 
                     var contracts: [String : Int] = [ : ] // contains rollupId entries
-                    
                     var currenrRollupId: String = ""
                     
                     for line in lines {

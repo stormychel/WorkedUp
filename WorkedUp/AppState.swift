@@ -12,5 +12,10 @@ class AppState: ObservableObject {
     
     private init () {}
     
-    @Published var label: String = "?"
+    // persist label for nice startup
+    @Published var label: String = (UserDefaults.standard.value(forKey: "label") as? String ?? "00:00") {
+        didSet {
+            UserDefaults.standard.set(label, forKey: "label")
+        }
+    }
 }
