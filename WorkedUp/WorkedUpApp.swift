@@ -9,15 +9,13 @@ import SwiftUI
 
 @main
 struct WorkedUpApp: App {
-    @State var currentNumber: String = "1"
+    @State var totalTimeWorked: Int = 0
     
     init() {
         let fm = FileManager.default
         let userName = NSUserName()
         let path = "/Users/\(userName)/Library/Application Support/Upwork/Upwork/Logs"
         
-        print("path: \(path)")
-
         do {
             let logFileNames = try fm.contentsOfDirectory(atPath: path).filter({!$0.contains("cmon") && !$0.contains("dash")})
             
@@ -32,14 +30,12 @@ struct WorkedUpApp: App {
                     // chop string into array of lines
                     var lines: [String] = [] // contains file line by line
                     for line in newestLogFileString.split(separator: "\n") {
-                        print (line)
-                        
                         lines.append( String(line) )
                     }
                     
                     // TODO: scan for entry line containing LOAD_WORKED_TIME, this is the start of the JSON
 
-                    var contracts: [String : String] = [ : ] // contains rollupId entries
+                    var contracts: [String : Int] = [ : ] // contains rollupId entries
                     
                     var currenrRollupId: String = ""
                     
@@ -48,45 +44,38 @@ struct WorkedUpApp: App {
                             currenrRollupId = line.filter("0123456789".contains)
                         } else if line.contains("minutesWorkedThisWeek") {
                             if !currenrRollupId.isEmpty {
-                                contracts[currenrRollupId] = line.filter("0123456789".contains)
+                                if let new = Int( line.filter("0123456789".contains) ) {
+                                    if let old = contracts[currenrRollupId] {
+                                        if new > old { // found newer value, replace
+                                            contracts[currenrRollupId] = new
+                                        }
+                                    } else { // no value found yet, assign
+                                        contracts[currenrRollupId] = new
+                                    }
+                                }
+                                
                                 currenrRollupId = ""
                             }
                         }
                     }
                     
                     print(contracts)
+                                       
+                    totalTimeWorked = 0
                     
-                    /*
-                     [2023-03-03T23:01:27.057] [INFO] fe.[default] - [INFO] <Redux> - action { type: 'LOAD_WORKED_TIME',
-                       payload:
-                        [ { rollupId: '30472057',
-                            minutesWorkedThisWeek: 0,
-                            minutesWorkedToday: 0,
-                            lastTimeWorked: 1675342994 },
-                          { rollupId: '31147095',
-                            minutesWorkedThisWeek: 0,
-                            minutesWorkedToday: 0,
-                            lastTimeWorked: 1677414806 },
-                          { rollupId: '31592247',
-                            minutesWorkedThisWeek: 0,
-                            minutesWorkedToday: 0,
-                            lastTimeWorked: 1669898652 },
-                          { rollupId: '31744019',
-                            minutesWorkedThisWeek: 0,
-                            minutesWorkedToday: 0,
-                            lastTimeWorked: 1673558939 },
-                          { rollupId: '32175518',
-                            minutesWorkedThisWeek: 0,
-                            minutesWorkedToday: 0,
-                            lastTimeWorked: 0 },
-                          { rollupId: '32614295',
-                            minutesWorkedThisWeek: 1510,
-                            minutesWorkedToday: 410,
-                            lastTimeWorked: 1677861093 } ] }
-                     */
+                    var test: Int = 0
                     
+                    for (_, value) in contracts {
+                        totalTimeWorked += value
+                        
+                        test += value
+                    }
+                                        
+                    print("test : \(test)")
+
+                    totalTimeWorked = test
                     
-                    
+                    print("totalTimeWorked : \(totalTimeWorked)")
                     
                 } catch {
                     print(error)
@@ -99,17 +88,12 @@ struct WorkedUpApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra(currentNumber, systemImage: "\(currentNumber)") {
-            // 3
-            Button("One") {
-                currentNumber = "1"
+        MenuBarExtra( String(totalTimeWorked) ) {
+            
+            Button("Quit") {
+                NSApplication.shared.terminate(self)
             }
-            Button("Two") {
-                currentNumber = "2"
-            }
-            Button("Three") {
-                currentNumber = "3"
-            }
+            
         }
     }
 }
