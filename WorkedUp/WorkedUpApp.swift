@@ -20,6 +20,10 @@ struct WorkedUpApp: App {
         MenuBarExtra( appState.label) {
             Text("Total time on Upwork this week: \(appState.label)")
             
+            Button("Update") {
+                updateLabel()
+            }
+            
             Button("Quit") {
                 NSApplication.shared.terminate(self)
             }
