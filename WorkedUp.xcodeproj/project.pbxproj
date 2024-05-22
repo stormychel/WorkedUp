@@ -13,6 +13,7 @@
 		EDC3E98829AFA63D0089BCEA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDC3E98729AFA63D0089BCEA /* Preview Assets.xcassets */; };
 		EDCAABFA29B2CE770031E981 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCAABF929B2CE770031E981 /* AppState.swift */; };
 		EDCAABFC29B2D06E0031E981 /* SwiftHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCAABFB29B2D06E0031E981 /* SwiftHelpers.swift */; };
+		EDE5B6D62BFDE0090036165C /* LoginItemHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE5B6D52BFDE0090036165C /* LoginItemHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		EDC3E98929AFA63D0089BCEA /* WorkedUp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WorkedUp.entitlements; sourceTree = "<group>"; };
 		EDCAABF929B2CE770031E981 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		EDCAABFB29B2D06E0031E981 /* SwiftHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftHelpers.swift; sourceTree = "<group>"; };
+		EDE5B6D52BFDE0090036165C /* LoginItemHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginItemHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				EDC3E98029AFA63A0089BCEA /* WorkedUpApp.swift */,
 				EDCAABF929B2CE770031E981 /* AppState.swift */,
 				EDC3E98229AFA63A0089BCEA /* ContentView.swift */,
+				EDE5B6D52BFDE0090036165C /* LoginItemHelper.swift */,
 				EDCAABFB29B2D06E0031E981 /* SwiftHelpers.swift */,
 				EDC3E98429AFA63D0089BCEA /* Assets.xcassets */,
 				EDC3E98929AFA63D0089BCEA /* WorkedUp.entitlements */,
@@ -145,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDE5B6D62BFDE0090036165C /* LoginItemHelper.swift in Sources */,
 				EDCAABFA29B2CE770031E981 /* AppState.swift in Sources */,
 				EDCAABFC29B2D06E0031E981 /* SwiftHelpers.swift in Sources */,
 				EDC3E98329AFA63A0089BCEA /* ContentView.swift in Sources */,

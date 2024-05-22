@@ -12,6 +12,7 @@ struct WorkedUpApp: App {
     @StateObject var appState = AppState.shared
 
     init() {
+        LoginItemHelper.setLoginItem(enabled: true)
         updateLabel()
         startTimer()
     }
