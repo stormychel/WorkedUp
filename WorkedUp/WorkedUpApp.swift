@@ -38,9 +38,10 @@ struct WorkedUpApp: App {
     
     fileprivate func updateLabel() {
         DispatchQueue.main.async {
-            let hhmm = minutesToHoursAndMinutes( getTotal() )
+            let hhmm = minutesToHoursAndMinutes(getTotal())
+            let formattedTime = String(format: "%02d:%02d", hhmm.hours, hhmm.leftMinutes)
             
-            AppState.shared.label = "\(hhmm.hours):\(hhmm.leftMinutes)"
+            AppState.shared.label = formattedTime
         }
     }
     
