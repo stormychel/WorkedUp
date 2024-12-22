@@ -30,13 +30,13 @@ final class SwiftHelpers {
         let fm = FileManager.default
         
         do {
-            let logFileNames = try fm.contentsOfDirectory(atPath: logFilePath)
+            let logFileNames = try fm.contentsOfDirectory(atPath: Constants.logFilePath)
                 .filter { !$0.contains("cmon") && !$0.contains("dash") }
             
             return logFileNames
                 .sorted { $0.filter("0123456789".contains) > $1.filter("0123456789".contains) }
                 .first
-                .map { logFilePath + "/" + $0 }
+                .map { Constants.logFilePath + "/" + $0 }
         } catch {
             print("Error fetching log files: \(error)")
             return nil
@@ -57,5 +57,13 @@ final class SwiftHelpers {
         }
         
         return contracts
+    }
+    
+    static func extractRollupId(from line: String) -> String? {
+        return line.contains("rollupId") ? line.filter("0123456789".contains) : nil
+    }
+    
+    static func extractMinutesWorked(from line: String) -> Int? {
+        return line.contains("minutesWorkedThisWeek") ? Int(line.filter("0123456789".contains)) : nil
     }
 }
