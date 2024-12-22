@@ -44,21 +44,54 @@ struct WorkedUpEntry: TimelineEntry {
     let totalTime: String
 }
 
+//struct WorkedUpWidgetEntryView: View {
+//    var entry: WorkedUpProvider.Entry
+//
+//    var body: some View {
+//        VStack {
+//            Text("Total time worked this week")
+//                .font(.headline)
+//            Text(entry.totalTime)
+//                .font(.largeTitle)
+//                .fontWeight(.bold)
+//        }
+//        .padding()
+//    }
+//}
 struct WorkedUpWidgetEntryView: View {
+    @StateObject var appState = AppState.shared
+    
     var entry: WorkedUpProvider.Entry
 
     var body: some View {
         VStack {
             Text("Total time worked this week")
                 .font(.headline)
-            Text(entry.totalTime)
+//            Text(entry.totalTime)
+            Text(appState.label)
                 .font(.largeTitle)
                 .fontWeight(.bold)
         }
         .padding()
+        .background(Color.black) // Or any background color you'd like
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+//        .containerBackground(for: .widget) // Correct usage with 'for: .widget'
+        .containerBackground(Color.black, for: .widget)
     }
 }
 
+//@main
+//struct WorkedUpWidget: Widget {
+//    let kind: String = "WorkedUpWidget"
+//
+//    var body: some WidgetConfiguration {
+//        StaticConfiguration(kind: kind, provider: WorkedUpProvider()) { entry in
+//            WorkedUpWidgetEntryView(entry: entry)
+//        }
+//        .configurationDisplayName("Worked Up Time Tracker")
+//        .description("Track total time worked on Upwork this week.")
+//    }
+//}
 //@main
 struct WorkedUpWidget: Widget {
     let kind: String = "WorkedUpWidget"
@@ -66,6 +99,8 @@ struct WorkedUpWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: WorkedUpProvider()) { entry in
             WorkedUpWidgetEntryView(entry: entry)
+//                .containerBackground(for: .widget) // Apply container background
+                .containerBackground(Color.black, for: .widget)
         }
         .configurationDisplayName("Worked Up Time Tracker")
         .description("Track total time worked on Upwork this week.")

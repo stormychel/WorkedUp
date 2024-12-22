@@ -13,6 +13,7 @@
 		D99740B02D186A1500353989 /* SwiftHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCAABFB29B2D06E0031E981 /* SwiftHelpers.swift */; };
 		D99740B22D186E9500353989 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99740B12D186E9500353989 /* Constants.swift */; };
 		D99740B32D18700C00353989 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99740B12D186E9500353989 /* Constants.swift */; };
+		D99740B42D18728700353989 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCAABF929B2CE770031E981 /* AppState.swift */; };
 		EDC3E98129AFA63A0089BCEA /* WorkedUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC3E98029AFA63A0089BCEA /* WorkedUpApp.swift */; };
 		EDC3E98329AFA63A0089BCEA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC3E98229AFA63A0089BCEA /* ContentView.swift */; };
 		EDC3E98529AFA63D0089BCEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDC3E98429AFA63D0089BCEA /* Assets.xcassets */; };
@@ -255,6 +256,7 @@
 			files = (
 				D99740B32D18700C00353989 /* Constants.swift in Sources */,
 				D99740B02D186A1500353989 /* SwiftHelpers.swift in Sources */,
+				D99740B42D18728700353989 /* AppState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
