@@ -7,6 +7,105 @@
 
 import SwiftUI
 
+
+// MARK: TEST CODE (testing improvements)
+@main
+struct WorkedUpApp: App {
+    @StateObject var appState = AppState.shared
+
+    private let logFilePath = "/Users/\(NSUserName())/Library/Application Support/Upwork/Upwork/Logs"
+
+    init() {
+        LoginItemHelper.setLoginItem(enabled: true)
+        updateLabel()
+        startTimer()
+    }
+
+    var body: some Scene {
+        MenuBarExtra(appState.label) {
+            Text("Total time on Upwork this week: \(appState.label)")
+            
+            Button("Update") {
+                updateLabel()
+            }
+            
+            Button("Quit") {
+                NSApplication.shared.terminate(self)
+            }
+        }
+    }
+
+    private func startTimer() {
+        Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
+            updateLabel()
+        }
+    }
+
+    private func updateLabel() {
+        DispatchQueue.main.async {
+            let hhmm = minutesToHoursAndMinutes(getTotal())
+            appState.label = String(format: "%02d:%02d", hhmm.hours, hhmm.leftMinutes)
+        }
+    }
+
+    private func getTotal() -> Int {
+        guard let newestLogFile = fetchNewestLogFile() else { return 0 }
+
+        do {
+            let newestLogFileString = try String(contentsOfFile: newestLogFile)
+            let contracts = parseLogFile(newestLogFileString)
+            return contracts.values.reduce(0, +)
+        } catch {
+            print("Error reading log file: \(error)")
+            return 0
+        }
+    }
+
+    private func fetchNewestLogFile() -> String? {
+        let fm = FileManager.default
+        
+        do {
+            let logFileNames = try fm.contentsOfDirectory(atPath: logFilePath)
+                .filter { !$0.contains("cmon") && !$0.contains("dash") }
+
+            return logFileNames
+                .sorted { $0.filter("0123456789".contains) > $1.filter("0123456789".contains) }
+                .first
+                .map { logFilePath + "/" + $0 }
+        } catch {
+            print("Error fetching log files: \(error)")
+            return nil
+        }
+    }
+
+    private func parseLogFile(_ logFileString: String) -> [String: Int] {
+        var contracts = [String: Int]()
+        var currentRollupId = ""
+        
+        for line in logFileString.split(separator: "\n") {
+            if let rollupId = extractRollupId(from: String(line)) {
+                currentRollupId = rollupId
+            } else if let minutesWorked = extractMinutesWorked(from: String(line)), !currentRollupId.isEmpty {
+                contracts[currentRollupId] = max(contracts[currentRollupId] ?? 0, minutesWorked)
+                currentRollupId = "" // Reset after processing
+            }
+        }
+        
+        return contracts
+    }
+
+    private func extractRollupId(from line: String) -> String? {
+        return line.contains("rollupId") ? line.filter("0123456789".contains) : nil
+    }
+
+    private func extractMinutesWorked(from line: String) -> Int? {
+        return line.contains("minutesWorkedThisWeek") ? Int(line.filter("0123456789".contains)) : nil
+    }
+}
+//
+
+
+/*
 @main
 struct WorkedUpApp: App {
     @StateObject var appState = AppState.shared
@@ -103,3 +202,4 @@ struct WorkedUpApp: App {
         return 0
     }
 }
+*/
