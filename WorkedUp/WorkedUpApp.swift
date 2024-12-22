@@ -44,7 +44,7 @@ struct WorkedUpApp: App {
     private func updateLabel() {
         DispatchQueue.main.async {
             let hhmm = minutesToHoursAndMinutes(getTotal())
-            appState.label = String(format: "%02d:%02d", hhmm.hours, hhmm.leftMinutes)
+            AppState.shared.label = String(format: "%02d:%02d", hhmm.hours, hhmm.leftMinutes)
         }
     }
 
