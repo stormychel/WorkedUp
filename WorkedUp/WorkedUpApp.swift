@@ -112,8 +112,8 @@ struct WorkedUpApp: App {
 
     init() {
         LoginItemHelper.setLoginItem(enabled: true)
-        updateLabel()
-        startTimer()
+        Self.updateLabel()
+        Self.startTimer()
     }
 
     var body: some Scene {
@@ -121,7 +121,7 @@ struct WorkedUpApp: App {
             Text("Total time on Upwork this week: \(appState.label)")
             
             Button("Update") {
-                updateLabel()
+                Self.updateLabel()
             }
             
             Button("Quit") {
@@ -130,22 +130,22 @@ struct WorkedUpApp: App {
         }
     }
     
-    fileprivate func startTimer() {
-        Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { timer in
+    fileprivate static func startTimer() {
+        Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
             updateLabel()
         }
     }
     
-    fileprivate func updateLabel() {
+    fileprivate static func updateLabel() {
         DispatchQueue.main.async {
             let hhmm = minutesToHoursAndMinutes(getTotal())
             let formattedTime = String(format: "%02d:%02d", hhmm.hours, hhmm.leftMinutes)
-            
+
             AppState.shared.label = formattedTime
         }
     }
     
-    fileprivate func getTotal () -> Int {
+    fileprivate static func getTotal() -> Int {
         let fm = FileManager.default
         let userName = NSUserName()
         let path = "/Users/\(userName)/Library/Application Support/Upwork/Upwork/Logs"
