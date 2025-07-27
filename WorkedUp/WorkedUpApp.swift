@@ -22,7 +22,7 @@ struct WorkedUpApp: App {
             Text("Total time on Upwork this week: \(appState.label)")
             
             Button("Update") {
-                updateLabel()
+                Self.updateLabel()
             }
             
             Button("Quit") {
