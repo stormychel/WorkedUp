@@ -1,0 +1,44 @@
+# Xcode
+## Build products
+build/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM
+
+# Swift Package Manager
+.build/
+Packages/
+.swiftpm/
+
+# Xcode workspace settings
+xcuserdata/
+*.xcworkspace
+!default.xcworkspace
+*.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/Build/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+
+# Code coverage
+*.xccovreport
+*.xccovarchive
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Other
+*.xcuserstate
+
+# macOS Finder files
+.DS_Store
