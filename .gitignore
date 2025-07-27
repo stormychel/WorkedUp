@@ -39,3 +39,6 @@ playground.xcworkspace
 
 # Other
 *.xcuserstate
+
+# macOS Finder files
+.DS_Store
