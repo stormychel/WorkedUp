@@ -54,7 +54,7 @@ struct WorkedUpApp: App {
                 let urlString = path + "/" + newestLogFileName
                 let logContent = try String(contentsOfFile: urlString)
 
-                var currentRollupId: String = ""
+//                var currentRollupId: String = ""
                 var weekTotals: [String: Int] = [:]
                 var dayTotals: [String: Int] = [:]
 
