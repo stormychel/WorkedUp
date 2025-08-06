@@ -18,7 +18,7 @@ struct WorkedUpApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra(appState.label) {
+        MenuBarExtra( appState.label) {
             Text("Total time on Upwork this week: \(appState.label)")
             
             Button("Update") {
@@ -37,78 +37,87 @@ struct WorkedUpApp: App {
         }
     }
     
-    fileprivate static func updateLabel() {
-        DispatchQueue.main.async {
-            let hhmm = minutesToHoursAndMinutes(getTotal())
-            let formattedTime = String(format: "%02d:%02d", hhmm.hours, hhmm.leftMinutes)
-
-            AppState.shared.label = formattedTime
-        }
-    }
     
-    fileprivate static func getTotal() -> Int {
+    fileprivate static func getTotals() -> (week: Int, day: Int) {
         let fm = FileManager.default
         let userName = NSUserName()
         let path = "/Users/\(userName)/Library/Application Support/Upwork/Upwork/Logs"
-        
+
         do {
-            let logFileNames = try fm.contentsOfDirectory(atPath: path).filter({!$0.contains("cmon") && !$0.contains("dash")})
-            
-            if let newestLogFileName = logFileNames.sorted(by: {$0.filter("0123456789".contains) > $1.filter("0123456789".contains)}).first {
-                let urlString = path + "/" + newestLogFileName
+            let logFileNames = try fm.contentsOfDirectory(atPath: path)
+                .filter { !$0.contains("cmon") && !$0.contains("dash") }
+
+            if let newestLogFileName = logFileNames
+                .sorted(by: { $0.filter("0123456789".contains) > $1.filter("0123456789".contains) })
+                .first {
                 
-                print("urlString: \(urlString)")
-                    
-                do {
-                    let newestLogFileString = try String(contentsOfFile: urlString) // make string from file
-                    
-                    var contracts: [String : Int] = [ : ] // contains rollupId entries
-                    var currenrRollupId: String = ""
-                    
-                    // chop string into array of lines + get required data
-                    for line in newestLogFileString.split(separator: "\n") {
-                        if line.contains("rollupId") {
-                            currenrRollupId = line.filter("0123456789".contains)
-                        } else if line.contains("minutesWorkedThisWeek") {
-                            if !currenrRollupId.isEmpty {
-                                if let new = Int( line.filter("0123456789".contains) ) {
-                                    if let old = contracts[currenrRollupId] {
-                                        if new > old { // found newer value, replace
-                                            contracts[currenrRollupId] = new
-                                        }
-                                    } else { // no value found yet, assign
-                                        contracts[currenrRollupId] = new
-                                    }
-                                }
-                                currenrRollupId = "" // end of current, clear name
+                let urlString = path + "/" + newestLogFileName
+                let logContent = try String(contentsOfFile: urlString)
+
+//                var currentRollupId: String = ""
+                var weekTotals: [String: Int] = [:]
+                var dayTotals: [String: Int] = [:]
+
+                var lines = logContent.split(separator: "\n")
+
+                for i in 0..<lines.count {
+                    let line = lines[i]
+
+                    if line.contains("minutesWorkedThisWeek") || line.contains("minutesWorkedToday") {
+                        var rollupId: String? = nil
+
+                        // Try to find rollupId by scanning upward
+                        for j in stride(from: i, through: max(i - 10, 0), by: -1) {
+                            let candidate = lines[j]
+                            if candidate.contains("rollupId") {
+                                rollupId = candidate.filter("0123456789".contains)
+                                break
+                            }
+                        }
+
+                        guard let rollup = rollupId, !rollup.isEmpty else {
+                            print("⚠️ No rollupId found for line \(i): \(line)")
+                            continue
+                        }
+
+                        if let minutes = Int(line.filter("0123456789".contains)) {
+                            if line.contains("minutesWorkedThisWeek") {
+                                weekTotals[rollup] = max(weekTotals[rollup] ?? 0, minutes)
+                            } else if line.contains("minutesWorkedToday") {
+                                dayTotals[rollup] = max(dayTotals[rollup] ?? 0, minutes)
                             }
                         }
                     }
-                     
-                    var total: Int = 0
-                    
-                    for (_, value) in contracts {
-                        total += value
-                    }
-                                                            
-                    return total
-                } catch {
-                    print(error)
                 }
+
+                let totalWeek = weekTotals.values.reduce(0, +)
+                let totalDay = dayTotals.values.reduce(0, +)
+                
+                
+                print("✅ WEEK TOTALS: \(weekTotals)")
+                print("✅ DAY TOTALS: \(dayTotals)")
+                
+                
+                return (totalWeek, totalDay)
             }
         } catch {
-            print(error)
+            print("‼️ Error while reading log: \(error)")
         }
 
-    private func updateLabel() {
-        DispatchQueue.main.async {
-            let hhmm = SwiftHelpers.minutesToHoursAndMinutes(SwiftHelpers.getTotal())
-            AppState.shared.label = String(format: "%02d:%02d", hhmm.hours, hhmm.leftMinutes)
-        }
+        return (0, 0)
     }
 
+    fileprivate static func updateLabel() {
+        DispatchQueue.main.async {
+            let totals = getTotals()
+            let week = minutesToHoursAndMinutes(totals.week)
+            let day = minutesToHoursAndMinutes(totals.day)
 
-
-
-
+            let label = String(format: "D-%02d:%02d / W-%02d:%02d", day.hours, day.leftMinutes, week.hours, week.leftMinutes)
+            print("⏱️ Updated label: \(label)")
+            AppState.shared.label = label
+        }
+    }
+    //
+    
 }
